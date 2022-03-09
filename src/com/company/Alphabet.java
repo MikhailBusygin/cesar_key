@@ -1,62 +1,35 @@
 package com.company;
 
 public class Alphabet {
-    final String alphabet = "абвгдеёжзийклмнопрстуфхцчшщъыьэюя";
-    String[] textRes;
-    String wordRes;
-    String[] symbolWordRes;
-    String symbolRes;
+    public static final String UPPER_CASE_ALPHABET = "АБВГДЕЁЖЗИЙКЛМНОПРСТУФХЦЧШЩЪЫЬЭЮЯ";
+    public static final String LOWER_CASE_ALPHABET = "абвгдеёжзийклмнопрстуфхцчшщъыьэюя";
+    private final StringBuilder text;
 
-    public void moveSymbol(int nextSymbol) {
-        symbolRes = symbolRes.toLowerCase();
-        if (alphabet.indexOf(symbolRes) + nextSymbol < 33) {
-            symbolRes = String.valueOf(alphabet.charAt(alphabet.indexOf(symbolRes) + nextSymbol));
-        } else {
-            symbolRes = String.valueOf(alphabet.charAt(alphabet.indexOf(symbolRes) + nextSymbol - 33));
+    public Alphabet(StringBuilder text) {
+        this.text = text;
+    }
+
+    public StringBuilder moveText() {
+        int upperCaseIndex;
+        int lowerCaseIndex;
+        for (int i = 0; i < text.length(); i++) {
+            upperCaseIndex = UPPER_CASE_ALPHABET.indexOf(text.charAt(i)) + 1;
+            if (upperCaseIndex > 0) {
+                if (upperCaseIndex != 33) {
+                    text.deleteCharAt(i).insert(i, UPPER_CASE_ALPHABET.charAt(upperCaseIndex));
+                } else {
+                    text.deleteCharAt(i).insert(i, UPPER_CASE_ALPHABET.charAt(0));
+                }
+            }
+            lowerCaseIndex = LOWER_CASE_ALPHABET.indexOf(text.charAt(i)) + 1;
+            if (lowerCaseIndex > 0) {
+                if (lowerCaseIndex != 33) {
+                    text.deleteCharAt(i).insert(i, LOWER_CASE_ALPHABET.charAt(lowerCaseIndex));
+                } else {
+                    text.deleteCharAt(i).insert(i, LOWER_CASE_ALPHABET.charAt(0));
+                }
+            }
         }
-    }
-
-    public void getSymbol(int j) {
-        symbolWordRes[j] = symbolRes;
-    }
-
-    public void getWord(int i) {
-        textRes[i] = wordRes;
-    }
-
-    public void setWord(int i) {
-        wordRes = textRes[i];
-    }
-
-    public void setSymbol(int j) {
-        symbolRes = symbolWordRes[j];
-    }
-
-    public void setText(String res) {
-        textRes = res.split(" ");
-    }
-
-    public String getText() {
-        return String.join(" ", textRes);
-    }
-
-    public void setSymbolWordRes() {
-        symbolWordRes = wordRes.split("");
-    }
-
-    public void getSymbolWordRes() {
-        wordRes = String.join("", symbolWordRes);
-    }
-
-    public boolean isSymbol() {
-        return !symbolRes.equals(",") && !symbolRes.equals(".") && !symbolRes.equals("\n");
-    }
-
-    public boolean hasUpperCase() {
-        return alphabet.contains(symbolRes);
-    }
-
-    public void setUpperCase() {
-        symbolRes = symbolRes.toUpperCase();
+        return text;
     }
 }
